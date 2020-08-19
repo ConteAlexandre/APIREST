@@ -151,6 +151,10 @@ class Users
      */
     public function getRoles(): array
     {
+        if (empty($this->roles)) {
+            return ['ROLE_USER'];
+        }
+
         return $this->roles;
     }
 
