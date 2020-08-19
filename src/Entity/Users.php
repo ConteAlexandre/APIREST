@@ -8,6 +8,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * Class Users
@@ -18,6 +20,16 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Users
 {
+    /**
+     * Add the column createdAt and updatedAt
+     */
+    use TimestampableEntity;
+
+    /**
+     * Add the column createdBy and updatedBy
+     */
+    use BlameableEntity;
+
     /**
      * @var int
      *
@@ -54,6 +66,13 @@ class Users
      * @ORM\Column(name="password", type="string", length=250, nullable=false)
      */
     private string $password;
+
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="roles", type="array", nullable=false)
+     */
+    private array $roles;
 
     /**
      * @return int
@@ -126,4 +145,22 @@ class Users
     {
         $this->password = $password;
     }
+
+    /**
+     * @return array
+     */
+    public function getRoles(): array
+    {
+        return $this->roles;
+    }
+
+    /**
+     * @param array $roles
+     */
+    public function setRoles(array $roles): void
+    {
+        $this->roles = $roles;
+    }
+
+
 }
