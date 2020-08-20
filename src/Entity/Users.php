@@ -10,6 +10,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class Users
@@ -18,7 +19,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
  *
  * @author CONTE Alexandre <pro.alexandre.conte@gmail.com>
  */
-class Users
+class Users implements UserInterface
 {
     /**
      * Add the column createdAt and updatedAt
@@ -166,5 +167,19 @@ class Users
         $this->roles = $roles;
     }
 
+    /**
+     * @return string|void|null
+     */
+    public function getSalt()
+    {
+        return null;
+    }
 
+    /**
+     *
+     */
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
 }
