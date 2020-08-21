@@ -76,6 +76,18 @@ class Users implements UserInterface
     private array $roles;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_enabled", type="boolean", nullable=false)
+     */
+    private bool $isEnabled;
+
+    public function __construct()
+    {
+        $this->isEnabled = true;
+    }
+
+    /**
      * @return int
      */
     public function getId(): int
@@ -165,6 +177,22 @@ class Users implements UserInterface
     public function setRoles(array $roles): void
     {
         $this->roles = $roles;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEnabled(): bool
+    {
+        return $this->isEnabled;
+    }
+
+    /**
+     * @param bool $isEnabled
+     */
+    public function setIsEnabled(bool $isEnabled): void
+    {
+        $this->isEnabled = $isEnabled;
     }
 
     /**
