@@ -15,6 +15,8 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * Class UsersRepository
  * @package App\Repository
+ *
+ * @author CONTE Alexandre <pro.alexandre.conte@gmail.com>
  */
 class UsersRepository extends ServiceEntityRepository
 {
