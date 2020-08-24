@@ -10,9 +10,12 @@ namespace App\Form\FormUser;
 
 use App\Entity\Users;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * Class RegisterType
@@ -26,14 +29,20 @@ class RegisterType extends AbstractType
     {
         $builder
             ->add('username', TextType::class)
-            ->add('password', TextType::class)
+            ->add('password', PasswordType::class, [
+                'property_path' => 'plainPassword',
+                'constraints' => [
+                    new NotBlank()
+                ]
+            ])
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Users::class
+            'data_class' => Users::class,
+            'csrf_protection' => false
         ]);
     }
 }

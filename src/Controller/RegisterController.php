@@ -11,28 +11,33 @@ namespace App\Controller;
 use App\EntityManager\UserManager;
 use App\Form\FormUser\RegisterType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class RegisterController
  * @package App\Controller
  *
- * @Route("/user", name="user_")
+ * @Route("/register", name="register_")
  *
  * @author CONTE Alexandre <pro.alexandre.conte@gmail.com>
  */
 class RegisterController extends AbstractController
 {
     /**
-     * @Route("/register", name="register", methods={"POST"})
+     * @Route("/user", name="user", methods={"POST"})
      *
      * @param UserManager $userManager
      * @param Request $request
-     * @return null|FormInterface
+     *
+     * @throws \Exception
+     *
+     * @return JsonResponse
      */
-    public function register(UserManager $userManager, Request $request)
+    public function register(UserManager $userManager, Request $request, ValidatorInterface $validator)
     {
         $data = json_decode($request->getContent(), true);
 
@@ -40,9 +45,13 @@ class RegisterController extends AbstractController
         $form = $this->createForm(RegisterType::class, $user);
         $form->submit($data);
 
-//        if (!$form->isValid()) {
-//            return $form;
-//        }
+        $violation = $validator->validate($user);
+
+        if (0 !== count($violation)) {
+            foreach ($violation as $error) {
+                return new JsonResponse($error->getMessage(), Response::HTTP_BAD_REQUEST);
+            }
+        }
 
         $userManager->save($user);
 

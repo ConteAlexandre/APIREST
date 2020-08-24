@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Users
@@ -43,12 +44,16 @@ class Users implements UserInterface
     /**
      * @var string
      *
+     * @Assert\Length(minMessage="2", max="30", minMessage="The firstName must contain 2 characters mini.", maxMessage="The firstName must not contain more than 30 characters.")
+     *
      * @ORM\Column(name="first_name", type="string", length=100, nullable=true)
      */
     private string $firstName;
 
     /**
      * @var string
+     *
+     * @Assert\Length(min="5", max="40", minMessage="The lastname must contain 5 characters minimum.", maxMessage="The lastName must not contain more than 40 characters")
      *
      * @ORM\Column(name="last_name", type="string", length=125, nullable=true)
      */
@@ -57,16 +62,33 @@ class Users implements UserInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="username", type="string", length=80, nullable=false)
+     * @Assert\NotBlank(message="This field is missing.")
+     * @Assert\Length(min="3", max="20", minMessage="The field username must contain 3 characters minimum.", maxMessage="The username must not contain more than 20 characters.")
+     *
+     * @ORM\Column(name="username", type="string", length=80, nullable=false, unique=true)
      */
     private string $username;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="password", type="string", length=250, nullable=false)
+     * @ORM\Column(name="password", type="string")
      */
     private string $password;
+
+    /**
+     * @var string
+     *
+     * @Assert\Length(min="8", minMessage="The password must contain 8 characters minimum")
+     */
+    private string $plainPassword;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="salt", type="string")
+     */
+    protected string $salt;
 
     /**
      * @var array
@@ -160,6 +182,22 @@ class Users implements UserInterface
     }
 
     /**
+     * @return string
+     */
+    public function getPlainPassword(): string
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * @param string $plainPassword
+     */
+    public function setPlainPassword(string $plainPassword): void
+    {
+        $this->plainPassword = $plainPassword;
+    }
+
+    /**
      * @return array
      */
     public function getRoles(): array
@@ -203,6 +241,14 @@ class Users implements UserInterface
         return null;
     }
 
+    /**
+     * @param mixed $salt
+     */
+    public function setSalt($salt): void
+    {
+        $this->salt = $salt;
+    }
+    
     /**
      *
      */
