@@ -77,11 +77,11 @@ class Users implements UserInterface
     private string $password;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @Assert\Length(min="8", minMessage="The password must contain 8 characters minimum")
      */
-    private string $plainPassword;
+    private $plainPassword;
 
     /**
      * @var string
@@ -93,7 +93,7 @@ class Users implements UserInterface
     /**
      * @var array
      *
-     * @ORM\Column(name="roles", type="array", nullable=false)
+     * @ORM\Column(name="roles", type="json", nullable=false)
      */
     private array $roles;
 
@@ -107,6 +107,7 @@ class Users implements UserInterface
     public function __construct()
     {
         $this->isEnabled = true;
+        $this->roles = [];
     }
 
     /**
@@ -184,7 +185,7 @@ class Users implements UserInterface
     /**
      * @return string
      */
-    public function getPlainPassword(): string
+    public function getPlainPassword(): ?string
     {
         return $this->plainPassword;
     }
@@ -202,11 +203,10 @@ class Users implements UserInterface
      */
     public function getRoles(): array
     {
-        if (empty($this->roles)) {
-            return ['ROLE_USER'];
-        }
+        $roles = $this->roles;
+        $roles[] = 'ROLE_USER';
 
-        return $this->roles;
+        return array_unique($roles);
     }
 
     /**
@@ -248,12 +248,12 @@ class Users implements UserInterface
     {
         $this->salt = $salt;
     }
-    
+
     /**
-     *
+     * Erase Credentials
      */
     public function eraseCredentials()
     {
-        // TODO: Implement eraseCredentials() method.
+        $this->plainPassword = null;
     }
 }

@@ -5,12 +5,15 @@
  * For Alexandre CONTE
  */
 
-namespace App\EntityManager;
+namespace App\Manager;
 
 
 use App\Entity\Users;
 use App\Repository\UsersRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
@@ -24,6 +27,7 @@ class UserManager
     protected $em;
     protected $userrepository;
     protected $passwordEncoder;
+    protected $logger;
 
     /**
      * UserManager constructor.
@@ -31,12 +35,18 @@ class UserManager
      * @param EntityManagerInterface $manager
      * @param UsersRepository $usersRepository
      * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param LoggerInterface $logger
      */
-    public function __construct(EntityManagerInterface $manager, UsersRepository $usersRepository, UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(
+        EntityManagerInterface $manager,
+        UsersRepository $usersRepository,
+        UserPasswordEncoderInterface $passwordEncoder,
+        LoggerInterface $logger)
     {
         $this->em = $manager;
         $this->userrepository = $usersRepository;
         $this->passwordEncoder = $passwordEncoder;
+        $this->logger = $logger;
     }
 
     /**
@@ -50,13 +60,33 @@ class UserManager
     }
 
     /**
+     * @param string $username
+     *
+     * @return Users|object|null
+     */
+    public function getUserByUsername(string $username)
+    {
+        $user = null;
+
+        try {
+            $user = $this->userrepository->findOneBy(['username' => $username]);
+        } catch (NonUniqueResultException $exception) {
+            $this->logger->error(sprintf('Multiple user returned with the same username: %s', $username));
+        } catch (NoResultException $exception) {
+        }
+
+        return $user;
+    }
+
+    /**
+     * Update password user with plainPassword who is the data form
+     *
      * @param Users $user
      *
      * @throws \Exception
      */
     public function updatePassword(Users $user): void
     {
-        dump($user->getPlainPassword());
         if (0 !== strlen($password = $user->getPlainPassword())) {
             $user->setSalt(rtrim(str_replace('+', '.', base64_encode(random_bytes(32))), '='));
             $user->setPassword($this->passwordEncoder->encodePassword($user, $user->getPlainPassword()));

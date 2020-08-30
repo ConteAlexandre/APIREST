@@ -8,7 +8,7 @@
 namespace App\Controller;
 
 
-use App\EntityManager\UserManager;
+use App\Manager\UserManager;
 use App\Form\FormUser\RegisterType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
