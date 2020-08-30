@@ -23,5 +23,11 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class LoginController extends AbstractController
 {
+    /**
+     * @Route()
+     */
+    public function login()
+    {
 
+    }
 }
