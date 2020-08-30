@@ -1,4 +1,6 @@
 {
+    "name": "apirest/apirest",
+    "description": "apirest for start good practices",
     "type": "project",
     "license": "proprietary",
     "require": {
