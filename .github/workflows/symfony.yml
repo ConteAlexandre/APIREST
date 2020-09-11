@@ -17,6 +17,15 @@ jobs:
     - name: Validate composer.json and composer.lock
       run: composer validate --with-dependencies
 
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v2
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-
+
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --no-suggest
 
@@ -24,4 +33,4 @@ jobs:
     # Docs: https://getcomposer.org/doc/articles/scripts.md
 
     - name: Run test suite
-      run: composer run-script test tests/Entity
+      run: vendor/bin/phpunit tests/Entity
