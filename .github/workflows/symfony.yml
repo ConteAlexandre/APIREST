@@ -33,6 +33,4 @@ jobs:
     # Docs: https://getcomposer.org/doc/articles/scripts.md
 
     - name: Run test suite
-      run: |
-        ./bin/phpunit
-        ./bin/phpunit tests/Entity
+      run: ./phpunit tests/Entity
