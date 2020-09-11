@@ -63,10 +63,7 @@
             "@auto-scripts"
         ],
         "test": [
-            "@phpunit"
-        ],
-        "phpunit": [
-            "vendor/bin/phpunit --"
+            "bin/phpunit"
         ]
     },
     "conflict": {
