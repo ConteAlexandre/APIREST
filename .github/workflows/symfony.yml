@@ -14,13 +14,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Configure composer
-      run: |
-          ([ -d ~/.composer ] || mkdir ~/.composer) && cp .github/composer-config.json ~/.composer/config.json
-          SYMFONY_VERSION=$(cat composer.json | grep '^ *\"dev-master\". *\"[1-9]' | grep -o '[0-9.]*')
-          echo "::set-env name=SYMFONY_VERSION::$SYMFONY_VERSION"
-          echo "::set-env name=COMPOSER_ROOT_VERSION::$SYMFONY_VERSION.x-dev"
-
     - name: Validate composer.json and composer.lock
       run: composer validate --with-dependencies
 
@@ -34,8 +27,11 @@ jobs:
           ${{ runner.os }}-php-
 
     - name: Install dependencies
-      run: composer install --prefer-dist --no-progress --no-suggest
-
+      run: |
+        composer install --prefer-dist --no-progress --no-suggest
+        echo "::group::install phpunit"
+        ./phpunit install
+        echo "::endgroup::"
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
 
