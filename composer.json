@@ -25,6 +25,7 @@
         "symfony/yaml": "4.4.*"
     },
     "require-dev": {
+        "codeception/module-symfony": "^1.1",
         "symfony/phpunit-bridge": "^5.1"
     },
     "config": {
