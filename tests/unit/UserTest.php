@@ -2,9 +2,10 @@
 
 namespace App\Tests\unit;
 
+use Codeception\Test\Unit;
 use App\Entity\Users;
 
-class UserTest extends \Codeception\Test\Unit
+class UserTest extends Unit
 {
 
     protected function _before()
