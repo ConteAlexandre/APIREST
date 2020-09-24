@@ -33,7 +33,6 @@ class UserController extends AbstractController
     public function getAllUser(UserManager $userManager)
     {
         $users = $userManager->getAllUser();
-
-        return new JsonResponse($users);
+        return $users;
     }
 }

@@ -48,7 +48,7 @@ class Users implements UserInterface
      *
      * @ORM\Column(name="first_name", type="string", length=100, nullable=true)
      */
-    private string $firstName;
+    private $firstName;
 
     /**
      * @var string
@@ -57,7 +57,7 @@ class Users implements UserInterface
      *
      * @ORM\Column(name="last_name", type="string", length=125, nullable=true)
      */
-    private string $lastName;
+    private $lastName;
 
     /**
      * @var string
@@ -67,14 +67,14 @@ class Users implements UserInterface
      *
      * @ORM\Column(name="username", type="string", length=80, nullable=false, unique=true)
      */
-    private string $username;
+    private $username;
 
     /**
      * @var string
      *
      * @ORM\Column(name="password", type="string")
      */
-    private string $password;
+    private $password;
 
     /**
      * @var string|null
@@ -121,7 +121,7 @@ class Users implements UserInterface
     /**
      * @return string
      */
-    public function getFirstName(): string
+    public function getFirstName()
     {
         return $this->firstName;
     }
@@ -137,7 +137,7 @@ class Users implements UserInterface
     /**
      * @return string
      */
-    public function getLastName(): string
+    public function getLastName()
     {
         return $this->lastName;
     }
@@ -153,7 +153,7 @@ class Users implements UserInterface
     /**
      * @return string
      */
-    public function getUsername(): string
+    public function getUsername()
     {
         return $this->username;
     }
@@ -166,10 +166,7 @@ class Users implements UserInterface
         $this->username = $username;
     }
 
-    /**
-     * @return string
-     */
-    public function getPassword(): string
+    public function getPassword()
     {
         return $this->password;
     }
@@ -185,7 +182,7 @@ class Users implements UserInterface
     /**
      * @return string
      */
-    public function getPlainPassword(): ?string
+    public function getPlainPassword()
     {
         return $this->plainPassword;
     }

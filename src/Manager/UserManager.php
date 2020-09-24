@@ -10,14 +10,13 @@ namespace App\Manager;
 
 use App\Entity\Users;
 use App\Repository\UsersRepository;
-use App\Services\SerializeServices;
+use App\Services\SerializerServices;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Class UserManager
@@ -40,14 +39,14 @@ class UserManager
      * @param UsersRepository $usersRepository
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param LoggerInterface $logger
-     * @param SerializeServices $serializeServices
+     * @param SerializerServices $serializeServices
      */
     public function __construct(
         EntityManagerInterface $manager,
         UsersRepository $usersRepository,
         UserPasswordEncoderInterface $passwordEncoder,
         LoggerInterface $logger,
-        SerializeServices $serializeServices)
+        SerializerServices $serializeServices)
     {
         $this->em = $manager;
         $this->userrepository = $usersRepository;
@@ -87,7 +86,9 @@ class UserManager
 
     public function getAllUser()
     {
-        return $this->userrepository->getAllUsers();
+        $users = $this->userrepository->findAll();
+        $response = JsonResponse::fromJsonString($this->serializeService->setSerializeObject($users));
+        return $response;
     }
 
     /**
