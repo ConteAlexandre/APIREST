@@ -28,4 +28,15 @@ class UsersRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Users::class);
     }
+
+    public function getAllUsers()
+    {
+        $qb = $this->createQueryBuilder('u');
+
+        $qb
+            ->select('u.username')
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
 }
