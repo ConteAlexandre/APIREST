@@ -10,6 +10,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -45,6 +46,8 @@ class Users implements UserInterface
      * @var string
      *
      * @Assert\Length(minMessage="2", max="30", minMessage="The firstName must contain 2 characters mini.", maxMessage="The firstName must not contain more than 30 characters.")
+     *
+     * @Serializer\Groups(groups={"test"})
      *
      * @ORM\Column(name="first_name", type="string", length=100, nullable=true)
      */

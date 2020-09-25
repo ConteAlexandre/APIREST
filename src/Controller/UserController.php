@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 use App\Manager\UserManager;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,6 +28,7 @@ class UserController extends AbstractController
      * @Route("/getall", name="getall", methods={"GET"})
      *
      * @param UserManager $userManager
+     * @Rest\View(serializerGroups={"test"})
      *
      * @return JsonResponse
      */
